@@ -18,7 +18,7 @@ function copyDir(folder, dest) {
             else {
                 files.forEach(file => {
                     if (file.isFile()) {
-                        let filePath = path.join(folderPath, file.name.toString());
+                        let filePath = path.join(folder, file.name.toString());
                         let destPath = path.join(dest, file.name.toString());
                         
                         fs.copyFile(filePath, destPath, (err) => {

@@ -25,3 +25,7 @@ fs.readdir(
     }
 );
 
+process.on("exit", () => {
+    output.end();
+});
+
