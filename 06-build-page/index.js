@@ -77,29 +77,30 @@ let destination = path.join(__dirname, "project-dist/assets");
 copyDir(copyPath, destination);
 
 function copyDir(folder, dest) {
-    fs.mkdir(dest, { recursive: true }, (err) => { if (err) throw err; });
-
-    fs.readdir(
-        folder, 
-        { withFileTypes: true },
-        (err, files) => {
-            if (err)
-                console.log(err);
-            else {
-                files.forEach(file => {
-                    let filePath = path.join(folder, file.name.toString());
-                    let destPath = path.join(dest, file.name.toString());
-                    if (file.isFile()) {                                    
-                        fs.copyFile(filePath, destPath, (err) => {
-                            if (err) {
-                              console.log("Error Found:", err);
-                            }   
-                        });
-                    } else {                     
-                        copyDir(filePath, destPath);
-                    }
-                });
+    fs.rm(dest, {recursive: true, force: true}, (err) => {
+        fs.mkdir(dest, { recursive: true }, (err) => { if (err) throw err; });
+        fs.readdir(
+            folder, 
+            { withFileTypes: true },
+            (err, files) => {
+                if (err)
+                    console.log(err);
+                else {
+                    files.forEach(file => {
+                        let filePath = path.join(folder, file.name.toString());
+                        let destPath = path.join(dest, file.name.toString());
+                        if (file.isFile()) {                                    
+                            fs.copyFile(filePath, destPath, (err) => {
+                                if (err) {
+                                  console.log("Error Found:", err);
+                                }   
+                            });
+                        } else {                     
+                            copyDir(filePath, destPath);
+                        }
+                    });
+                }
             }
-        }
-    );
+        );
+    });
 }
